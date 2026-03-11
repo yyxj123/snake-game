@@ -25,7 +25,20 @@ jobs:
     - name: Build EXE
       shell: bash
       run: |
-        pyinstaller --name SuperSnake-Windows --windowed --onefile --clean main.py
+        pyinstaller --name SuperSnake-Windows --windowed --onefile --clean ^
+          --hidden-import=pygame ^
+          --hidden-import=pygame.colordict ^
+          --hidden-import=pygame.display ^
+          --hidden-import=pygame.draw ^
+          --hidden-import=pygame.event ^
+          --hidden-import=pygame.font ^
+          --hidden-import=pygame.image ^
+          --hidden-import=pygame.key ^
+          --hidden-import=pygame.mouse ^
+          --hidden-import=pygame.time ^
+          --hidden-import=pygame.mixer ^
+          --collect-all=pygame ^
+          main.py
         ls -la dist/
     
     - name: Upload EXE to Release
