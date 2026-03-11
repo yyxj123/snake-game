@@ -1,0 +1,41 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install pygame pyinstaller
+    
+    - name: Build EXE
+      run: |
+        pyinstaller --name SuperSnake-Windows --windowed --onefile main.py
+    
+    - name: Upload EXE
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/SuperSnake-Windows.exe
+        tag_name: v1.0.0-windows
+        title: Super Snake v1.0.0 (Windows)
+        body: |
+          🎮 Super Snake Game - Windows 版本
+          
+          ## 使用方法
+          1. 下载 SuperSnake-Windows.exe
+          2. 双击运行
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
